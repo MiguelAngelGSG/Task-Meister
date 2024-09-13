@@ -1,56 +1,63 @@
 package com.example.TaskMeister.service;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
+import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.function.Function;
 
+@Component
 public class JwtUtil {
 
-    private final String secret;
+    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);  // You can use HS512 or others
 
-    public JwtUtil(String secret) {
-        this.secret = secret;
-    }
-
+    // Extract username from token
     public String getUsernameFromJwtToken(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public Date getExpirationDateFromJwtToken(String token) {
-        return extractClaim(token, Claims::getExpiration);
-    }
-
-    // Generate JWT Token for a given user
-    public String generateJwtToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails.getUsername());
-    }
-
-    //Validate JWT Token
-    public boolean validateJwtToken(String token, UserDetails userDetails) {
-        final String username = getUsernameFromJwtToken(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
-    }
-
-    // Check if Token has expired
-    private boolean isTokenExpired(String token) {
-        return getExpirationDateFromJwtToken(token).before(new Date());
-    }
-
-    private String createToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-                .signWith(SignatureAlgorithm.HS512, secret)
-                .compact();
+    // Extract any claim
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
+    // Check if token is expired
+    public Boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    // Extract expiration date from token
+    public Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+
+    // Generate token
+    public String generateToken(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))  // 10-hour expiration
+                .signWith(key)  // Use the key instead of just passing a string secret
+                .compact();
+    }
+
+    // Validate token
+    public Boolean validateJwtToken(String token, UserDetails userDetails) {
+        final String username = getUsernameFromJwtToken(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
 }
