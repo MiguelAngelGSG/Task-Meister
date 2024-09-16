@@ -32,12 +32,13 @@ public class UserServiceTest {
     @Test
     void getAllUsers() {
         List<User> users = new ArrayList<>();
-        User user = new User();
-        user.setId(1L);
-        user.setUsername("Juan");
-        user.setPassword("password123");
-        user.setEmail("juan@example.com");
-        user.setRole(ERole.USER);
+        User user = User.builder()
+                .id(1L)
+                .username("Juan")
+                .password("password123")
+                .email("juan@example.com")
+                .role(ERole.USER)
+                .build();
         users.add(user);
         when(iUserRepository.findAll()).thenReturn(users);
 
@@ -51,12 +52,13 @@ public class UserServiceTest {
 
     @Test
     void getUserById() {
-        User user = new User();
-        user.setId(1L);
-        user.setUsername("Juan");
-        user.setPassword("password123");
-        user.setEmail("juan@example.com");
-        user.setRole(ERole.USER);
+        User user = User.builder()
+                .id(1L)
+                .username("Juan")
+                .password("password123")
+                .email("juan@example.com")
+                .role(ERole.USER)
+                .build();
         when(iUserRepository.findById(1L)).thenReturn(Optional.of(user));
 
         User result = userService.getUserById(1L);
@@ -71,27 +73,30 @@ public class UserServiceTest {
         Long userId = 1L;
         doNothing().when(iUserRepository).deleteById(userId);
 
-        userService.delteUser(userId);
+        userService.delteUser(userId);  // Використовуйте правильний метод
 
         verify(iUserRepository, times(1)).deleteById(userId);
     }
 
     @Test
     void updateUser() {
-        User existingUser = new User();
-        existingUser.setId(1L);
-        existingUser.setUsername("Juan");
-        existingUser.setPassword("password123");
-        existingUser.setEmail("juan@example.com");
-        existingUser.setRole(ERole.USER);
+        User existingUser = User.builder()
+                .id(1L)
+                .username("Juan")
+                .password("password123")
+                .email("juan@example.com")
+                .role(ERole.USER)
+                .build();
 
-        User updatedUser = new User();
-        updatedUser.setId(1L);
-        updatedUser.setUsername("Juan Updated");
-        updatedUser.setPassword("newpassword123");
-        updatedUser.setEmail("juan.updated@example.com");
-        updatedUser.setRole(ERole.ADMIN);
+        User updatedUser = User.builder()
+                .id(1L)
+                .username("Juan Updated")
+                .password("newpassword123")
+                .email("juan.updated@example.com")
+                .role(ERole.ADMIN)
+                .build();
 
+        when(iUserRepository.findById(1L)).thenReturn(Optional.of(existingUser));
         when(iUserRepository.save(updatedUser)).thenReturn(updatedUser);
 
         User result = userService.updateUser(1L, updatedUser);

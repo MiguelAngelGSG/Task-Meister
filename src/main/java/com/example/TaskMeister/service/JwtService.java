@@ -5,6 +5,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -14,15 +15,20 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import static org.hibernate.query.sqm.tree.SqmNode.log;
+
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class JwtService {
     private static final String SECRET_KEY = "586E3272357538782F413F4428472B4B6250655368566B59703373367639792";
 
-    public String getTokenService(UserDetails user){
-
-        return getToken(new HashMap<>(),user);
+    public String getTokenService(UserDetails user) {
+        log.info("Generating token for user: {}", user.getUsername());
+        String token = getToken(new HashMap<>(), user);
+        log.info("Token generated successfully");
+        return token;
     }
 
     public String getToken(Map<String, Object> claims, UserDetails user){

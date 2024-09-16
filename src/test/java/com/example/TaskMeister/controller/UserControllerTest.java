@@ -42,7 +42,7 @@ public class UserControllerTest {
 
     @Test
     public void testGetAllUsers() throws Exception {
-        User user = new User();
+        User user = new User(null,null,null,null,null);
         user.setId(1L);
         user.setUsername("testuser");
         user.setEmail("test@example.com");
@@ -59,7 +59,7 @@ public class UserControllerTest {
 
     @Test
     public void testGetUserById() throws Exception {
-        User user = new User();
+        User user = new User(null,null,null,null,null);
         user.setId(1L);
         user.setUsername("testuser");
         user.setEmail("test@example.com");
@@ -76,7 +76,7 @@ public class UserControllerTest {
 
     @Test
     public void testUpdateUser() throws Exception {
-        User updatedUser = new User();
+        User updatedUser = new User(null,null,null,null,null);
         updatedUser.setId(1L);
         updatedUser.setUsername("updateduser");
         updatedUser.setEmail("updated@example.com");

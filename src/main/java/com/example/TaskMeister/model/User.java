@@ -104,4 +104,12 @@ public class User implements UserDetails {
     public void setRole(ERole role) {
         this.role = role;
     }
+
+    public User(Long id, String username, String password, String email, ERole role) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+    }
 }
