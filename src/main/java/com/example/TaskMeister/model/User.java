@@ -2,14 +2,13 @@ package com.example.TaskMeister.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Builder;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
 import java.util.List;
-@Builder
+
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
@@ -21,21 +20,57 @@ public class User implements UserDetails {
     @Column(unique = true, nullable = false)
     private String username;
 
-    @JsonIgnore // Ігноруємо пароль при серіалізації
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 
-    @Column(unique = true, nullable = false)
-    private String email;
+
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ERole role;
 
-    // Геттери та сеттери залишаються без змін
+    private User(Builder builder) {
+        this.id = builder.id;
+        this.username = builder.username;
+        this.password = builder.password;
+
+        this.role = builder.role;
+    }
+
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     @Override
-    @JsonIgnore // Ігноруємо authorities при серіалізації
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
+
+    public void setRole(ERole role) {
+        this.role = role;
+    }
+
+
+    @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
@@ -64,44 +99,45 @@ public class User implements UserDetails {
         return true;
     }
 
-    // Геттери та сеттери
-    public Long getId() {
-        return id;
+
+    public static class Builder {
+        private Long id;
+        private String username;
+        private String password;
+        private ERole role;
+
+        public Builder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setUsername(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public Builder setPassword(String password) {
+            this.password = password;
+            return this;
+        }
+
+
+        public Builder setRole(ERole role) {
+            this.role = role;
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
     }
 
-    public void setId(Long id) {
-        this.id = id;
+
+    public static Builder builder() {
+        return new Builder();
     }
 
-    public String getUsername() {
-        return username;
-    }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
-    public String getPassword() {
-        return password;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public ERole getRole() {
-        return role;
-    }
-
-    public void setRole(ERole role) {
-        this.role = role;
-    }
 }

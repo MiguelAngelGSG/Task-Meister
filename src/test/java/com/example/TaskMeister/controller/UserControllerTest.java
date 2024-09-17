@@ -2,7 +2,6 @@ package com.example.TaskMeister.controller;
 
 import com.example.TaskMeister.model.ERole;
 import com.example.TaskMeister.model.User;
-import com.example.TaskMeister.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

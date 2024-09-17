@@ -1,6 +1,6 @@
 package com.example.TaskMeister.config;
 
-import com.example.TaskMeister.repositories.IUserRepository;
+import com.example.TaskMeister.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
-    private final IUserRepository iUserRepository;
+    private final UserRepository iUserRepository;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
