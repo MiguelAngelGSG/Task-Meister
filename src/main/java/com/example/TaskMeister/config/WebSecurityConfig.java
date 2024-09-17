@@ -30,17 +30,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authRequest ->
                         authRequest
                                 .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/pets/withoutAdopted").permitAll()
-                                .requestMatchers("/pets").hasRole("ADMIN")
-                                .requestMatchers("/pets/delete/**").hasRole("ADMIN")
-                                .requestMatchers("/pets/create").hasRole("ADMIN")
-                                .requestMatchers("/pets/update/**").hasRole("ADMIN")
-                                .requestMatchers("/donations").hasRole("ADMIN")
-                                .requestMatchers("/donations/create").authenticated()
-                                .requestMatchers("/donations/delete/**").hasRole("ADMIN")
-                                .requestMatchers("/donations/update/**").hasRole("ADMIN")
-                                .requestMatchers("/donations/getAllByUser/**").authenticated()
-                                .requestMatchers("/pets/adopt/**").authenticated()
+                                .requestMatchers("/api/user/**").authenticated()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManager ->
