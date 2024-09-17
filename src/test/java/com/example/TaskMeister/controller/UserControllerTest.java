@@ -15,8 +15,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -75,22 +74,19 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testUpdateUser() throws Exception {
-        User updatedUser = new User();
-        updatedUser.setId(1L);
-        updatedUser.setUsername("updateduser");
-        updatedUser.setEmail("updated@example.com");
-        updatedUser.setRole(ERole.ADMIN);
+    void updateUser() throws Exception {
+        User updatedUser = new User(1L, "updateduser", "password", "updated@example.com", ERole.USER);
 
-        when(userService.updateUser(anyLong(), any(User.class))).thenReturn(updatedUser);
+        when(userService.updateUser(eq(1L), any(User.class))).thenReturn(updatedUser);
 
-        mockMvc.perform(put("/api/user/update/{id}", 1L)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updatedUser)))
+        mockMvc.perform(put("/api/user/update/1")
+                        .contentType("application/json")
+                        .content("{\"id\":1,\"username\":\"updateduser\",\"password\":\"password\",\"email\":\"updated@example.com\",\"role\":\"USER\"}"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.username").value("updateduser"))
-                .andExpect(jsonPath("$.email").value("updated@example.com"));
+                .andExpect(jsonPath("$.email").value("updated@example.com"))
+                .andExpect(jsonPath("$.role").value("USER"));
     }
 
     @Test
