@@ -18,7 +18,6 @@ import java.util.function.Function;
 public class JwtService {
     private static final String SECRET_KEY = "586E3272357538782F413F4428472B4B6250655368566B59703373367639792";
 
-    // Конструктор без @RequiredArgsConstructor
     public JwtService() {}
 
     public String getTokenService(UserDetails user) {
@@ -36,7 +35,7 @@ public class JwtService {
                 .compact();
     }
 
-    private Key getKey() {
+    Key getKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
