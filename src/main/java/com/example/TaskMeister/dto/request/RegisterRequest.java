@@ -10,11 +10,11 @@ public class RegisterRequest {
     private String password;
     private ERole role;
 
-    // Конструктор без параметрів
+
     public RegisterRequest() {
     }
 
-    // Конструктор з параметрами
+
     public RegisterRequest(String username, String email, String password, ERole role) {
         this.username = username;
         this.email = email;
@@ -22,42 +22,42 @@ public class RegisterRequest {
         this.role = role;
     }
 
-    // Геттер для username
+
     public String getUsername() {
         return username;
     }
 
-    // Сеттер для username
+
     public void setUsername(String username) {
         this.username = username;
     }
 
-    // Геттер для email
+
     public String getEmail() {
         return email;
     }
 
-    // Сеттер для email
+
     public void setEmail(String email) {
         this.email = email;
     }
 
-    // Геттер для password
+
     public String getPassword() {
         return password;
     }
 
-    // Сеттер для password
+
     public void setPassword(String password) {
         this.password = password;
     }
 
-    // Геттер для role
+
     public ERole getRole() {
         return role;
     }
 
-    // Сеттер для role
+
     public void setRole(ERole role) {
         this.role = role;
     }

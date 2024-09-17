@@ -31,6 +31,10 @@ public class WebSecurityConfig {
                         authRequest
                                 .requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/api/user/**").authenticated()
+                                .requestMatchers("/api/project/**").hasAnyAuthority("ADMIN", "USER")
+                                .requestMatchers("/api/project/delete/").hasAuthority("ADMIN")
+                                .requestMatchers("/api/project/update/**").hasAuthority("ADMIN")
+                                .requestMatchers("/api/project/getAll", "/api/post/getAll").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManager ->
