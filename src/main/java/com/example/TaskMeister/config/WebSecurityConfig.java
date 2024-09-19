@@ -31,7 +31,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authRequest ->
                         authRequest
                                 .requestMatchers("/api/auth/login").permitAll()
-                                .requestMatchers("/api/auth/register").hasRole("ADMIN")
+                                .requestMatchers("/api/auth/register").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/user/").hasAnyRole("ADMIN", "USER")
                                 .requestMatchers(HttpMethod.POST, "/api/user/").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/api/user/").hasRole("ADMIN")
@@ -45,6 +45,7 @@ public class WebSecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/api/task/").hasRole("MANAGER")
                                 .requestMatchers(HttpMethod.PUT, "/api/task/{id}").authenticated()
                                 .requestMatchers(HttpMethod.DELETE, "/api/task/").hasRole("MANAGER")
+                                .anyRequest().authenticated()
 
                 )
                 .sessionManagement(sessionManager ->
