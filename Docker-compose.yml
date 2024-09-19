@@ -21,7 +21,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql_service:3306/db_task_meister
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_DATASOURCE_PASSWORD: "yes"
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
     restart: always
@@ -34,7 +34,7 @@ services:
     ports:
       - "3307:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_ROOT_PASSWORD: "yes"
       MYSQL_DATABASE: db_task_meister
     restart: always
     healthcheck:
