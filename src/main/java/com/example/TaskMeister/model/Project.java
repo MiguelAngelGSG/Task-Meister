@@ -2,6 +2,9 @@ package com.example.TaskMeister.model;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 @Table(name = "project")
 @Entity
@@ -39,6 +42,15 @@ public class Project {
         this.name = name;
     }
 
+    @ManyToMany
+    @JoinTable(
+            name = "project_user",
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+private Set<User> user = new HashSet<>();
 
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Task> task = new HashSet<>();
    
 }
